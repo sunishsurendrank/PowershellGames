@@ -87,22 +87,15 @@ ___|____        ** $($LooserNote|random)
         Hiding few random characters in the word to make people guess it
         #>
 
+        $OriginalWord = (((Invoke-WebRequest 'http://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=0&minLength=5&maxLength=15&limit=1&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5').Content | ConvertFrom-Json ).Word) 
+        $Question = $OriginalWord 
+        $Length = ($OriginalWord).Length
+        $IndexesToHide = ($Length/2 - 1)
 
         
-
-        #$Word = Get-Help about* | %{$_.name -replace "about_" -split "_" -split "-"} |?{$_.length -gt 6} |select @{n='Word';e={$_}}, @{n='Length';e={$_.length}} -Unique |random
-        $Word = "powershell"
-        $OriginalWord = $Question = $Word.word
-        #$OriginalWord = $Question ="powershell"
-
-        if( -not $level1)
-        {
-
-        $IndexesToHide = ($Word.Length/2 - 1)
-        
-        1..$IndexesToHide | %{
+        1..$IndexesToHide | % {
             
-            $Question = $Question -replace $Question[$(get-random -Minimum 1 -Maximum $IndexesToHide)] , '_'
+            $Question = $Question -replace $Question[$(Get-Random -Minimum 1 -Maximum $IndexesToHide)] , '_'
         }
         
         $Question = "$($Question -split '')".Trim()
@@ -128,7 +121,7 @@ ___|____        ** $($LooserNote|random)
 
     $ProgressPreference =  $OriginalProgressPreference # Rollback Progress Preference to original
 
-    cls ; $start # Game Begins
+    Clear-Host ; $start # Game Begins
     $BeepSharpness =  2
     $BeepDuration = 0.4
 
