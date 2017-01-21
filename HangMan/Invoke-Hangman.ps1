@@ -90,9 +90,8 @@ ___|____        ** $($LooserNote|random)
         #$Word = Get-Help about* | %{$_.name -replace "about_" -split "_" -split "-"} |?{$_.length -gt 6} |select @{n='Word';e={$_}}, @{n='Length';e={$_.length}} -Unique |random
         while($ch -eq 'y' -or $ch -eq 'Y')
         {
-            $OriginalWord = (Invoke-WebRequest "http://randomword.setgetgo.com/get.php").Content 
-        $p = $OriginalWord.Length
-        Write-Host "Length = $p"
+        $OriginalWord = (Invoke-WebRequest "http://randomword.setgetgo.com/get.php").Content 
+       
         $IndexesToHide = ($OriginalWord.Length/2)
         $Question = $OriginalWord
         1..$IndexesToHide | %{
@@ -106,10 +105,10 @@ ___|____        ** $($LooserNote|random)
 
     $ProgressPreference =  $OriginalProgressPreference # Rollback Progress Preference to original
 
-    $start # Game Begins
+    cls;$start # Game Begins
     $BeepSharpness =  2
     $BeepDuration = 0.4
-
+    
     For($i=0;$i -lt 3;$i++)
     {
         Write-host "Guess the following $($OriginalWord.length) Letter word, this is your $($i+1)/3 attempt :  " -NoNewline
@@ -161,8 +160,8 @@ ___|____        ** $($LooserNote|random)
     
     }
         
-    Write-Host "Wish to play again?(Y /n)"
-    $ch = Read-Host
+    
+    $ch = Read-Host -prompt "Wish to play again?(Y /n)"
   }
 
 }
