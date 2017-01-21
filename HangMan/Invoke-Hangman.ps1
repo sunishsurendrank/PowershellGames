@@ -3,7 +3,8 @@ Function Invoke-Hangman
     [alias("Hangman")]
     Param
     (
-        [Switch] $SuppressMusic
+        [Switch] $SuppressMusic,
+        [Switch] $level1
     )
 
 
@@ -90,6 +91,7 @@ ___|____        ** $($LooserNote|random)
         $Question = $OriginalWord 
         $Length = ($OriginalWord).Length
         $IndexesToHide = ($Length/2 - 1)
+
         
         1..$IndexesToHide | % {
             
@@ -97,6 +99,23 @@ ___|____        ** $($LooserNote|random)
         }
         
         $Question = "$($Question -split '')".Trim()
+
+        }
+        else
+        {
+
+        
+        $IndexesToHide = ($Word.Length/2 - 2)
+        
+        1..$IndexesToHide | %{
+            
+            $Question = $Question -replace $Question[$(get-random -Minimum 1 -Maximum $IndexesToHide)] , '_'
+        }
+        
+        $Question = "$($Question -split '')".Trim()
+
+
+        }
 
     #endregion GetRandomWord
 
@@ -116,18 +135,7 @@ ___|____        ** $($LooserNote|random)
         {
             $Winner
             Write-Host " WINNER " -BackgroundColor Yellow -ForegroundColor Black 
-            If(-not $SuppressMusic)
-            {
-                [Console]::Beep(349*$BeepSharpness, 100)
-                [Console]::Beep(466*$BeepSharpness, 100)
-                [Console]::Beep(588*$BeepSharpness, 100)
-                [Console]::Beep(699*$BeepSharpness, 100)
-                [Console]::Beep(933*$BeepSharpness, 300)
-                [Console]::Beep(933*$BeepSharpness, 100)
-                [Console]::Beep(933*$BeepSharpness, 100)
-                [Console]::Beep(933*$BeepSharpness, 100)
-                [Console]::Beep(1047*$BeepSharpness, 400)
-            }
+            
             return
         }
         else
@@ -142,16 +150,7 @@ ___|____        ** $($LooserNote|random)
                 Write-Host " DEAD " -BackgroundColor Red -ForegroundColor Black
                 Write-Host "`nCORRECT WORD : " -NoNewline; Write-Host "$OriginalWord" -ForegroundColor Yellow
                 
-                If(-not $SuppressMusic)
-                {
-                    [console]::beep(659,500*$BeepDuration) 
-                    [console]::beep(698,350*$BeepDuration) 
-                    [console]::beep(523,150*$BeepDuration) 
-                    [console]::beep(415,500*$BeepDuration) 
-                    [console]::beep(349,350*$BeepDuration) 
-                    [console]::beep(523,150*$BeepDuration) 
-                    [console]::beep(440,1000*$BeepDuration)
-                }
+                
             }
         }
     
